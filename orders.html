@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Queue 🖨️</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖨️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #ff5fa2; --blue: #3ec6ff; --yellow: #ffc93c;
+    --purple: #9b6bff; --green: #4ade80; --ink: #2b2350; --paper: #fffdf7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    min-height: 100vh;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 32px; text-align: center; margin-bottom: 20px; }
+  #login { text-align: center; margin-top: 60px; }
+  #login input {
+    font: inherit; font-size: 18px; padding: 12px 16px;
+    border: 2.5px solid var(--ink); border-radius: 14px; width: 240px;
+  }
+  #login button, .refresh {
+    font: inherit; font-weight: 700; font-size: 16px;
+    padding: 12px 20px; margin-left: 8px;
+    border: 2.5px solid var(--ink); border-radius: 14px;
+    background: var(--yellow); cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
+  }
+  #login .msg { margin-top: 12px; color: #c0392b; font-weight: 600; min-height: 22px; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .toolbar .count { font-weight: 700; opacity: .7; }
+  .card {
+    background: #fff; border: 2.5px solid var(--ink); border-radius: 18px;
+    padding: 16px 18px; margin-bottom: 14px; box-shadow: 4px 4px 0 rgba(43,35,80,.15);
+  }
+  .card.done { opacity: .55; }
+  .card .head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+  .card .who { font-size: 19px; font-weight: 800; }
+  .card .when { font-size: 13px; opacity: .55; }
+  .card .spec { margin-top: 8px; line-height: 1.55; font-size: 15px; }
+  .card .spec b { font-weight: 700; }
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 13px; font-weight: 700; border: 2px solid var(--ink);
+  }
+  .tag.new { background: var(--pink); color: #fff; }
+  .tag.printing { background: var(--blue); }
+  .tag.done { background: var(--green); }
+  .statusBtns { margin-top: 10px; display: flex; gap: 8px; }
+  .statusBtns button {
+    font: inherit; font-weight: 700; font-size: 13px;
+    padding: 6px 12px; border: 2px solid var(--ink); border-radius: 999px;
+    background: #fff; cursor: pointer;
+  }
+  .statusBtns button:hover { background: var(--yellow); }
+  .empty { text-align: center; opacity: .6; font-size: 18px; margin-top: 40px; }
+  #queue { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🖨️ Order Queue</h1>
+
+  <div id="login">
+    <input type="password" id="passcode" placeholder="Passcode" onkeydown="if(event.key==='Enter')loadOrders()">
+    <button onclick="loadOrders()">Let me in</button>
+    <div class="msg" id="loginMsg"></div>
+  </div>
+
+  <div id="queue">
+    <div class="toolbar">
+      <span class="count" id="count"></span>
+      <button class="refresh" onclick="loadOrders()">Refresh ↻</button>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://zwiqmrlquldhjjwbeakj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_7QMusP6TZR-eKN4qtgcx7g_KexkigQU";
+
+function getPasscode() {
+  return document.getElementById("passcode").value || sessionStorage.getItem("needoh_pass") || "";
+}
+
+async function rpc(fn, args) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(args)
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+async function loadOrders() {
+  const pass = getPasscode();
+  const msg = document.getElementById("loginMsg");
+  msg.textContent = "";
+  let orders;
+  try {
+    orders = await rpc("get_needoh_orders", { passcode: pass });
+  } catch (e) {
+    msg.textContent = "Couldn't load orders — check the passcode.";
+    return;
+  }
+  sessionStorage.setItem("needoh_pass", pass);
+  document.getElementById("login").style.display = "none";
+  document.getElementById("queue").style.display = "block";
+
+  const open = orders.filter(o => o.status !== "done").length;
+  document.getElementById("count").textContent =
+    `${orders.length} order${orders.length === 1 ? "" : "s"} · ${open} open`;
+
+  const list = document.getElementById("list");
+  if (!orders.length) {
+    list.innerHTML = '<div class="empty">No orders yet. Share the form link! 📣</div>';
+    return;
+  }
+  list.innerHTML = orders.map(o => `
+    <div class="card ${o.status === "done" ? "done" : ""}">
+      <div class="head">
+        <span class="who">${esc(o.customer_name)} <span class="tag ${o.status}">${o.status}</span></span>
+        <span class="when">${new Date(o.created_at).toLocaleString()}</span>
+      </div>
+      <div class="spec">
+        <b>${esc(o.case_style)}</b> × ${o.quantity} · for ${esc(o.needoh_type || "?")}<br>
+        ${o.colors ? `🎨 ${esc(o.colors)}<br>` : ""}
+        ${o.with_logo ? "✨ With logo" : "No logo"}${o.personalization ? ` · name: "${esc(o.personalization)}"` : ""}<br>
+        ${o.needed_by ? `📅 Needed by ${esc(o.needed_by)}<br>` : ""}
+        ${o.notes ? `📝 ${esc(o.notes)}<br>` : ""}
+        📬 ${esc(o.contact)}
+      </div>
+      <div class="statusBtns">
+        <button onclick="setStatus('${o.id}','new')">New</button>
+        <button onclick="setStatus('${o.id}','printing')">Printing</button>
+        <button onclick="setStatus('${o.id}','done')">Done ✔</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function setStatus(id, status) {
+  try {
+    await rpc("set_needoh_order_status", {
+      passcode: getPasscode(), order_id: id, new_status: status
+    });
+    loadOrders();
+  } catch (e) {
+    alert("Couldn't update status. Try refreshing.");
+  }
+}
+
+if (sessionStorage.getItem("needoh_pass")) loadOrders();
+</script>
+</body>
+</html>
