@@ -3,6 +3,11 @@
 A tiny order-collection site for custom 3D-printed NeeDoh cases — a "Google
 Form, but ours" for gathering orders and print specs from friends and family.
 
+## Live site
+
+- **Order form** (share this): https://zwiqmrlquldhjjwbeakj.supabase.co/functions/v1/needoh
+- **Order queue** (private, passcode-gated): https://zwiqmrlquldhjjwbeakj.supabase.co/functions/v1/needoh/orders
+
 ## Pages
 
 - **`index.html`** — the public order form. Collects name, contact, case style
@@ -25,6 +30,14 @@ table (`needoh_orders`):
 
 The Supabase URL and publishable key in the HTML are safe to expose — that's
 what they're for; the security lives in the database policies.
+
+## Hosting
+
+The live site is served by a Supabase Edge Function (`supabase/functions/
+needoh/index.ts`) that embeds both pages — regenerate it from the HTML files
+and redeploy if you change them. There's also a GitHub Pages workflow
+(`.github/workflows/pages.yml`) as an alternative host: enable Pages in the
+repo settings (source: GitHub Actions) and trigger the workflow manually.
 
 ## Running locally
 

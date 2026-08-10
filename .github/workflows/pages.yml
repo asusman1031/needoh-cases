@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Manual only: enabling Pages needs repo-admin, which the Actions token lacks.
+# Turn on Pages once in Settings → Pages (source: GitHub Actions), then run this.
 on:
-  push:
-    branches: [claude/new-session-c9nmeg, main]
   workflow_dispatch:
 
 permissions:
