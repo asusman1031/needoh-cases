@@ -3,81 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Queue 🖨️</title>
+<title>Order Queue — NeeDoh Cases</title>
 <meta name="robots" content="noindex">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖨️</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2242%22 fill=%22%23E8704A%22/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --pink: #ff5fa2; --blue: #3ec6ff; --yellow: #ffc93c;
-    --purple: #9b6bff; --green: #4ade80; --ink: #2b2350; --paper: #fffdf7;
+    --cream: #FAF5EC; --card: #FFFFFF; --ink: #33302B; --muted: #8B857A;
+    --line: #E7DFD2; --green: #3E5C42; --coral: #E8704A; --sun: #F3C64F;
+    --shadow: 0 1px 2px rgba(51,48,43,.05), 0 8px 24px rgba(51,48,43,.07);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-weight: 600;
     color: var(--ink);
-    background: var(--paper);
+    background: var(--cream);
     min-height: 100vh;
-    padding: 24px 16px 64px;
+    padding: 36px 18px 64px;
+    -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 760px; margin: 0 auto; }
-  h1 { font-size: 32px; text-align: center; margin-bottom: 20px; }
-  #login { text-align: center; margin-top: 60px; }
+  h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 30px; text-align: center; margin-bottom: 22px; }
+  #login { text-align: center; margin-top: 56px; }
   #login input {
-    font: inherit; font-size: 18px; padding: 12px 16px;
-    border: 2.5px solid var(--ink); border-radius: 14px; width: 240px;
+    font: inherit; font-size: 17px; padding: 12px 16px;
+    border: 1.5px solid var(--line); border-radius: 12px; width: 230px; background: #fff;
   }
+  #login input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(62,92,66,.14); }
   #login button, .refresh {
-    font: inherit; font-weight: 700; font-size: 16px;
-    padding: 12px 20px; margin-left: 8px;
-    border: 2.5px solid var(--ink); border-radius: 14px;
-    background: var(--yellow); cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
+    font: inherit; font-weight: 800; font-size: 15px;
+    padding: 12px 22px; margin-left: 8px;
+    border: none; border-radius: 999px;
+    background: var(--green); color: #fff; cursor: pointer;
   }
-  #login .msg { margin-top: 12px; color: #c0392b; font-weight: 600; min-height: 22px; }
+  #login button:hover, .refresh:hover { background: #32503a; }
+  #login .msg { margin-top: 12px; color: #A34424; font-weight: 700; min-height: 22px; font-size: 14.5px; }
   .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-  .toolbar .count { font-weight: 700; opacity: .7; }
+  .toolbar .count { font-weight: 800; color: var(--muted); font-size: 14.5px; }
   .card {
-    background: #fff; border: 2.5px solid var(--ink); border-radius: 18px;
-    padding: 16px 18px; margin-bottom: 14px; box-shadow: 4px 4px 0 rgba(43,35,80,.15);
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 18px 20px; margin-bottom: 12px; box-shadow: var(--shadow);
   }
   .card.done { opacity: .55; }
   .card .head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; }
-  .card .who { font-size: 19px; font-weight: 800; }
-  .card .when { font-size: 13px; opacity: .55; }
-  .card .spec { margin-top: 8px; line-height: 1.55; font-size: 15px; }
-  .card .spec b { font-weight: 700; }
+  .card .who { font-size: 17px; font-weight: 800; }
+  .card .who small { color: var(--muted); font-size: 12.5px; font-weight: 700; }
+  .card .when { font-size: 12.5px; color: var(--muted); }
+  .card .spec { margin-top: 8px; line-height: 1.65; font-size: 14.5px; }
+  .card .spec a { color: var(--green); }
   .tag {
-    display: inline-block; padding: 2px 10px; border-radius: 999px;
-    font-size: 13px; font-weight: 700; border: 2px solid var(--ink);
+    display: inline-block; padding: 2px 11px; border-radius: 999px;
+    font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
   }
-  .tag.new { background: var(--pink); color: #fff; }
-  .tag.printing { background: var(--blue); }
-  .tag.done { background: var(--green); }
-  .statusBtns { margin-top: 10px; display: flex; gap: 8px; }
+  .tag.new { background: #FBEADF; color: var(--coral); }
+  .tag.printing { background: #EAF0F6; color: #3F6A96; }
+  .tag.done { background: #EEF2EC; color: var(--green); }
+  .statusBtns { margin-top: 12px; display: flex; gap: 8px; }
   .statusBtns button {
-    font: inherit; font-weight: 700; font-size: 13px;
-    padding: 6px 12px; border: 2px solid var(--ink); border-radius: 999px;
-    background: #fff; cursor: pointer;
+    font: inherit; font-weight: 800; font-size: 13px;
+    padding: 7px 14px; border: 1.5px solid var(--line); border-radius: 999px;
+    background: #FDFBF7; cursor: pointer; color: var(--ink);
   }
-  .statusBtns button:hover { background: var(--yellow); }
-  .empty { text-align: center; opacity: .6; font-size: 18px; margin-top: 40px; }
+  .statusBtns button:hover { border-color: var(--green); color: var(--green); }
+  .empty { text-align: center; color: var(--muted); font-size: 17px; margin-top: 40px; }
   #queue { display: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🖨️ Order Queue</h1>
+  <h1>Order Queue</h1>
 
   <div id="login">
     <input type="password" id="passcode" placeholder="Passcode" onkeydown="if(event.key==='Enter')loadOrders()">
-    <button onclick="loadOrders()">Let me in</button>
+    <button onclick="loadOrders()">Open</button>
     <div class="msg" id="loginMsg"></div>
   </div>
 
   <div id="queue">
     <div class="toolbar">
       <span class="count" id="count"></span>
-      <button class="refresh" onclick="loadOrders()">Refresh ↻</button>
+      <button class="refresh" onclick="loadOrders()">Refresh</button>
     </div>
     <div id="list"></div>
   </div>
@@ -132,30 +138,30 @@ async function loadOrders() {
 
   const list = document.getElementById("list");
   if (!orders.length) {
-    list.innerHTML = '<div class="empty">No orders yet. Share the form link! 📣</div>';
+    list.innerHTML = '<div class="empty">No orders yet. Share the form link!</div>';
     return;
   }
   list.innerHTML = orders.map(o => `
     <div class="card ${o.status === "done" ? "done" : ""}">
       <div class="head">
-        <span class="who">${esc(o.customer_name)}${o.order_code ? ` <small style="opacity:.5;font-size:13px">${esc(o.order_code)}</small>` : ""} <span class="tag ${o.status}">${o.status}</span></span>
+        <span class="who">${esc(o.customer_name)}${o.order_code ? ` <small>${esc(o.order_code)}</small>` : ""} <span class="tag ${o.status}">${o.status}</span></span>
         <span class="when">${new Date(o.created_at).toLocaleString()}</span>
       </div>
       <div class="spec">
         <b>${esc(o.case_style)}</b> × ${o.quantity} · for ${esc(o.needoh_types || o.needoh_type || "?")}<br>
-        ${o.colors ? `🎨 ${esc(o.colors)}<br>` : ""}
-        ${o.design ? `🖌️ ${esc(o.design)}` : (o.with_logo ? "✨ With logo" : "No logo")}${o.personalization ? ` — "${esc(o.personalization)}"${o.font ? ` (${esc(o.font)})` : ""}` : ""}<br>
-        ${o.order_type ? `🚚 ${esc(o.order_type)}${o.ship_address ? ` — ${esc(o.ship_address)}` : ""}<br>` : ""}
-        ${o.payment_method ? `💳 ${esc(o.payment_method)}<br>` : ""}
-        ${o.needed_by ? `📅 Needed by ${esc(o.needed_by)}<br>` : ""}
-        ${o.notes ? `📝 ${esc(o.notes)}<br>` : ""}
-        ${o.photo_url ? `📷 <a href="${esc(o.photo_url)}" target="_blank" rel="noopener">their NeeDoh photo</a><br>` : ""}
-        📬 ${esc(o.contact)}${o.preferred_contact ? ` (prefers ${esc(o.preferred_contact).toLowerCase()})` : ""}${o.social_handle ? ` · ${esc(o.social_handle)}` : ""}
+        ${o.colors ? `Colors: ${esc(o.colors)}<br>` : ""}
+        ${o.design ? `Design: ${esc(o.design)}` : (o.with_logo ? "With logo" : "No logo")}${o.personalization ? ` — "${esc(o.personalization)}"${o.font ? ` (${esc(o.font)})` : ""}` : ""}<br>
+        ${o.order_type ? `${esc(o.order_type)}${o.ship_address ? ` — ${esc(o.ship_address)}` : ""}<br>` : ""}
+        ${o.payment_method ? `Pay by ${esc(o.payment_method)}<br>` : ""}
+        ${o.needed_by ? `Needed by ${esc(o.needed_by)}<br>` : ""}
+        ${o.notes ? `Notes: ${esc(o.notes)}<br>` : ""}
+        ${o.photo_url ? `<a href="${esc(o.photo_url)}" target="_blank" rel="noopener">View their NeeDoh photo</a><br>` : ""}
+        Contact: ${esc(o.contact)}${o.preferred_contact ? ` (prefers ${esc(o.preferred_contact).toLowerCase()})` : ""}${o.social_handle ? ` · ${esc(o.social_handle)}` : ""}
       </div>
       <div class="statusBtns">
         <button onclick="setStatus('${o.id}','new')">New</button>
         <button onclick="setStatus('${o.id}','printing')">Printing</button>
-        <button onclick="setStatus('${o.id}','done')">Done ✔</button>
+        <button onclick="setStatus('${o.id}','done')">Done</button>
       </div>
     </div>
   `).join("");
