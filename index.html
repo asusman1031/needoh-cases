@@ -531,6 +531,30 @@ form.addEventListener("submit", async (e) => {
     });
     if (!res.ok) throw new Error(await res.text());
 
+    // Email a copy of the order (best-effort — the order is already saved above)
+    fetch("https://formsubmit.co/ajax/ajsusman@gmail.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        _subject: `NeeDoh order ${order_code} — ${payload.customer_name}`,
+        _template: "table",
+        order: order_code,
+        name: payload.customer_name,
+        contact: `${payload.contact} (prefers ${payload.preferred_contact})`,
+        social: payload.social_handle || "—",
+        case: `${payload.quantity} × ${payload.case_style}`,
+        for: payload.needoh_types,
+        colors: payload.colors,
+        design: payload.design + (payload.personalization ? ` — "${payload.personalization}" (${payload.font})` : ""),
+        delivery: payload.order_type + (payload.ship_address ? ` — ${payload.ship_address}` : ""),
+        payment: payload.payment_method,
+        needed_by: payload.needed_by || "—",
+        notes: payload.notes || "—",
+        photo: photo_url || "—",
+        queue: "https://needoh-cases.vercel.app/orders.html"
+      })
+    }).catch(() => {});
+
     document.getElementById("ordNum").textContent = "Order #" + order_code;
     document.getElementById("ordSummary").innerHTML = [
       `<b>${payload.quantity} × ${payload.case_style}</b>`,
