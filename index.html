@@ -31,8 +31,8 @@
     min-height: 100vh;
     padding: 24px 16px 64px;
   }
-  .wrap { max-width: 640px; margin: 0 auto; }
-  header { text-align: center; margin-bottom: 28px; }
+  .wrap { max-width: 680px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 20px; }
   .blob-row { font-size: 44px; letter-spacing: 6px; }
   h1 {
     font-size: clamp(32px, 7vw, 46px);
@@ -44,87 +44,97 @@
     color: transparent;
   }
   header p { font-size: 18px; margin-top: 6px; opacity: .8; }
-  form {
-    background: rgba(255,255,255,.85);
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .gallery img {
+    width: 100%;
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+    background: #fff;
+  }
+  form, #done {
+    background: rgba(255,255,255,.88);
     backdrop-filter: blur(6px);
     border-radius: 24px;
-    padding: 28px 24px;
+    padding: 26px 22px;
     box-shadow: 0 12px 40px rgba(43,35,80,.12);
     border: 3px solid var(--ink);
   }
-  .field { margin-bottom: 22px; }
-  label.top {
-    display: block;
-    font-weight: 700;
-    font-size: 17px;
-    margin-bottom: 8px;
+  .section {
+    border-top: 2.5px dashed rgba(43,35,80,.25);
+    margin-top: 22px;
+    padding-top: 18px;
   }
-  label.top .opt { font-weight: 500; opacity: .55; font-size: 14px; }
+  .section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+  .section h2 { font-size: 20px; margin-bottom: 12px; }
+  .section h2 .num {
+    display: inline-block; width: 28px; height: 28px; line-height: 25px;
+    text-align: center; background: var(--yellow);
+    border: 2px solid var(--ink); border-radius: 50%; font-size: 15px; margin-right: 6px;
+  }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label.top { display: block; font-weight: 700; font-size: 16px; margin-bottom: 7px; }
+  label.top .opt { font-weight: 500; opacity: .55; font-size: 13px; }
   input[type=text], input[type=email], input[type=date], input[type=number], select, textarea {
     width: 100%;
     font: inherit;
     font-size: 16px;
-    padding: 12px 14px;
+    padding: 11px 13px;
     border: 2.5px solid var(--ink);
     border-radius: 14px;
     background: #fff;
     color: var(--ink);
   }
-  textarea { resize: vertical; min-height: 84px; }
-  input:focus, select:focus, textarea:focus {
-    outline: 3px solid var(--blue);
-    outline-offset: 1px;
-  }
-  .style-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 10px;
-  }
-  .style-grid input { position: absolute; opacity: 0; pointer-events: none; }
-  .style-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 14px 8px;
-    border: 2.5px solid var(--ink);
-    border-radius: 16px;
-    background: #fff;
-    cursor: pointer;
-    text-align: center;
-    font-weight: 700;
+  textarea { resize: vertical; min-height: 74px; }
+  input:focus, select:focus, textarea:focus { outline: 3px solid var(--blue); outline-offset: 1px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 9px; }
+  .cards input { position: absolute; opacity: 0; pointer-events: none; }
+  .card-opt {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 12px 6px;
+    border: 2.5px solid var(--ink); border-radius: 15px;
+    background: #fff; cursor: pointer; text-align: center;
+    font-weight: 700; font-size: 14px;
     transition: transform .12s, background .12s;
   }
-  .style-card span.emoji { font-size: 34px; }
-  .style-card small { font-weight: 500; opacity: .6; font-size: 12px; }
-  .style-card:hover { transform: translateY(-2px); }
-  .style-grid input:checked + .style-card { background: var(--yellow); box-shadow: 4px 4px 0 var(--ink); }
-  .style-grid input:focus-visible + .style-card { outline: 3px solid var(--blue); }
-  .pill-row { display: flex; gap: 10px; flex-wrap: wrap; }
-  .pill-row input { position: absolute; opacity: 0; pointer-events: none; }
+  .card-opt .emoji { font-size: 28px; }
+  .card-opt small { font-weight: 500; opacity: .6; font-size: 11.5px; }
+  .card-opt:hover { transform: translateY(-2px); }
+  .cards input:checked + .card-opt { background: var(--yellow); box-shadow: 4px 4px 0 var(--ink); }
+  .cards input:focus-visible + .card-opt { outline: 3px solid var(--blue); }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pills input { position: absolute; opacity: 0; pointer-events: none; }
   .pill {
-    padding: 10px 18px;
-    border: 2.5px solid var(--ink);
-    border-radius: 999px;
-    background: #fff;
-    font-weight: 700;
-    cursor: pointer;
+    padding: 8px 15px;
+    border: 2.5px solid var(--ink); border-radius: 999px;
+    background: #fff; font-weight: 700; font-size: 14px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
   }
-  .pill-row input:checked + .pill { background: var(--green); box-shadow: 3px 3px 0 var(--ink); }
-  .pill-row input:focus-visible + .pill { outline: 3px solid var(--blue); }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
+  .pills input:checked + .pill { background: var(--green); box-shadow: 3px 3px 0 var(--ink); }
+  .pills input:focus-visible + .pill { outline: 3px solid var(--blue); }
+  .pills.multi input:checked + .pill { background: var(--blue); }
+  .dot { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid rgba(43,35,80,.5); display: inline-block; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+  .hint { font-size: 13px; opacity: .6; margin-top: 5px; }
+  .hidden { display: none !important; }
   button.submit {
     width: 100%;
-    font: inherit;
-    font-size: 20px;
-    font-weight: 800;
+    margin-top: 22px;
+    font: inherit; font-size: 20px; font-weight: 800;
     padding: 16px;
-    border: 3px solid var(--ink);
-    border-radius: 18px;
+    border: 3px solid var(--ink); border-radius: 18px;
     background: linear-gradient(90deg, var(--pink), var(--purple));
-    color: #fff;
-    cursor: pointer;
+    color: #fff; cursor: pointer;
     box-shadow: 5px 5px 0 var(--ink);
     transition: transform .12s, box-shadow .12s;
   }
@@ -132,37 +142,29 @@
   button.submit:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
   button.submit:disabled { opacity: .6; cursor: wait; transform: none; }
   .error {
-    display: none;
-    margin-top: 14px;
-    padding: 12px;
-    border-radius: 12px;
-    background: #ffe1e1;
-    border: 2px solid #e05555;
-    font-weight: 600;
+    display: none; margin-top: 14px; padding: 12px;
+    border-radius: 12px; background: #ffe1e1; border: 2px solid #e05555; font-weight: 600;
   }
-  #done {
-    display: none;
-    text-align: center;
-    background: rgba(255,255,255,.9);
-    border: 3px solid var(--ink);
-    border-radius: 24px;
-    padding: 48px 24px;
-    box-shadow: 0 12px 40px rgba(43,35,80,.12);
+  #done { display: none; text-align: center; }
+  #done .big { font-size: 60px; }
+  #done h2 { font-size: 28px; margin: 8px 0 2px; }
+  #done .ordnum {
+    display: inline-block; margin: 8px 0 14px; padding: 6px 16px;
+    background: var(--yellow); border: 2.5px solid var(--ink); border-radius: 999px;
+    font-weight: 800; font-size: 18px;
   }
-  #done .big { font-size: 64px; }
-  #done h2 { font-size: 30px; margin: 8px 0; }
-  #done p { font-size: 17px; opacity: .8; }
+  #done .summary {
+    text-align: left; background: #fff; border: 2.5px solid var(--ink);
+    border-radius: 16px; padding: 14px 18px; margin: 0 auto 16px; max-width: 420px;
+    font-size: 15px; line-height: 1.6;
+  }
+  #done p.note { font-size: 16px; opacity: .8; }
   #done button {
-    margin-top: 20px;
-    font: inherit; font-weight: 700; font-size: 16px;
-    padding: 12px 24px;
-    border: 2.5px solid var(--ink);
-    border-radius: 999px;
-    background: var(--yellow);
-    cursor: pointer;
-    box-shadow: 3px 3px 0 var(--ink);
+    margin-top: 18px; font: inherit; font-weight: 700; font-size: 16px;
+    padding: 12px 24px; border: 2.5px solid var(--ink); border-radius: 999px;
+    background: var(--yellow); cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
   }
-  footer { text-align: center; margin-top: 28px; font-size: 14px; opacity: .55; }
+  footer { text-align: center; margin-top: 26px; font-size: 14px; opacity: .55; }
 </style>
 </head>
 <body>
@@ -170,80 +172,196 @@
   <header>
     <div class="blob-row">🍕🧊🍩🔑</div>
     <h1>NeeDoh Case Orders</h1>
-    <p>Custom 3D-printed cases for your squishies. Tell us what you want!</p>
+    <p>Custom 3D-printed cases for your squishies. Every case helps grow the collection! 🧸❤️</p>
   </header>
 
+  <div class="gallery" id="gallery">
+    <img src="images/cases-1.jpg" alt="Our printed NeeDoh cases" onerror="this.remove()">
+    <img src="images/cases-2.jpg" alt="NeeDoh case with logo lid" onerror="this.remove()">
+  </div>
+
   <form id="orderForm">
-    <div class="two-col">
-      <div class="field">
-        <label class="top" for="customer_name">Your name</label>
-        <input type="text" id="customer_name" required maxlength="80" placeholder="Squish McGee">
+    <div class="section">
+      <h2><span class="num">1</span>About you</h2>
+      <div class="two-col">
+        <div class="field">
+          <label class="top" for="customer_name">Your name</label>
+          <input type="text" id="customer_name" required maxlength="80" placeholder="Squish McGee">
+        </div>
+        <div class="field">
+          <label class="top" for="contact">Email or phone</label>
+          <input type="text" id="contact" required maxlength="120" placeholder="you@email.com or 555-123-4567">
+        </div>
       </div>
-      <div class="field">
-        <label class="top" for="contact">Email or phone</label>
-        <input type="text" id="contact" required maxlength="120" placeholder="you@email.com">
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="top">Case style</label>
-      <div class="style-grid" role="radiogroup" aria-label="Case style">
-        <label><input type="radio" name="case_style" value="Pizza Slice" required>
-          <span class="style-card"><span class="emoji">🍕</span>Pizza Slice<small>triangle w/ lid</small></span></label>
-        <label><input type="radio" name="case_style" value="Chill Case (Cube)">
-          <span class="style-card"><span class="emoji">🧊</span>Chill Case<small>cube w/ lid</small></span></label>
-        <label><input type="radio" name="case_style" value="Keychain Mini">
-          <span class="style-card"><span class="emoji">🔑</span>Keychain Mini<small>for Dohjees</small></span></label>
-        <label><input type="radio" name="case_style" value="Custom">
-          <span class="style-card"><span class="emoji">💡</span>Custom<small>describe below</small></span></label>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="field">
-        <label class="top" for="needoh_type">Which NeeDoh is it for?</label>
-        <select id="needoh_type">
-          <option>Classic Groovy Glob</option>
-          <option>Nice Cube</option>
-          <option>Dohjee (mini)</option>
-          <option>Fuzz Ball</option>
-          <option>Squeezza Pizza</option>
-          <option>Other / not sure</option>
-        </select>
-      </div>
-      <div class="field">
-        <label class="top" for="quantity">How many?</label>
-        <input type="number" id="quantity" min="1" max="20" value="1" required>
+      <div class="two-col">
+        <div class="field">
+          <label class="top">Best way to reach you</label>
+          <div class="pills" role="radiogroup" aria-label="Preferred contact">
+            <label><input type="radio" name="preferred_contact" value="Text" checked><span class="pill">💬 Text</span></label>
+            <label><input type="radio" name="preferred_contact" value="Email"><span class="pill">📧 Email</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="top" for="social_handle">Instagram/Facebook name <span class="opt">(optional)</span></label>
+          <input type="text" id="social_handle" maxlength="80" placeholder="@yourname">
+        </div>
       </div>
     </div>
 
-    <div class="field">
-      <label class="top" for="colors">Colors <span class="opt">(base, lid, logo…)</span></label>
-      <input type="text" id="colors" maxlength="200" placeholder="e.g. black case, galaxy sparkle lid">
-    </div>
-
-    <div class="field">
-      <label class="top">NeeDoh logo on the case?</label>
-      <div class="pill-row" role="radiogroup" aria-label="Logo">
-        <label><input type="radio" name="with_logo" value="yes" checked><span class="pill">With logo ✨</span></label>
-        <label><input type="radio" name="with_logo" value="no"><span class="pill">No logo</span></label>
+    <div class="section">
+      <h2><span class="num">2</span>What case do you want?</h2>
+      <div class="cards" role="radiogroup" aria-label="Case size">
+        <label><input type="radio" name="case_style" value="Single NeeDoh case" required>
+          <span class="card-opt"><span class="emoji">🧊</span>Single<small>holds 1</small></span></label>
+        <label><input type="radio" name="case_style" value="2-NeeDoh case">
+          <span class="card-opt"><span class="emoji">🧊🧊</span>Double<small>holds 2</small></span></label>
+        <label><input type="radio" name="case_style" value="3-NeeDoh case">
+          <span class="card-opt"><span class="emoji">🚦</span>Triple<small>holds 3</small></span></label>
+        <label><input type="radio" name="case_style" value="4-NeeDoh case">
+          <span class="card-opt"><span class="emoji">🍀</span>Quad<small>holds 4</small></span></label>
+        <label><input type="radio" name="case_style" value="Large / multi-NeeDoh case">
+          <span class="card-opt"><span class="emoji">📦</span>Large<small>the whole squad</small></span></label>
+        <label><input type="radio" name="case_style" value="Custom size">
+          <span class="card-opt"><span class="emoji">💡</span>Custom<small>tell us below</small></span></label>
       </div>
     </div>
 
-    <div class="two-col">
+    <div class="section">
+      <h2><span class="num">3</span>Which NeeDohs will live in it?</h2>
+      <div class="pills multi" role="group" aria-label="NeeDoh types">
+        <label><input type="checkbox" name="needoh_type" value="Original NeeDoh"><span class="pill">Original</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Nice Cube"><span class="pill">Nice Cube</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Gumdrop"><span class="pill">Gumdrop</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Cube"><span class="pill">Cube</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Teenie NeeDoh"><span class="pill">Teenie</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Dohnut"><span class="pill">Dohnut 🍩</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Gummy"><span class="pill">Gummy</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Dohjees"><span class="pill">Dohjees</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Fuzz Ball"><span class="pill">Fuzz Ball</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Cool Cat"><span class="pill">Cool Cat 🐱</span></label>
+        <label><input type="checkbox" name="needoh_type" value="Other"><span class="pill">Other</span></label>
+      </div>
+      <p class="hint">Pick all that apply — it's how we get the fit right. Not sure of the name? Upload a photo below!</p>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">4</span>Colors</h2>
       <div class="field">
-        <label class="top" for="personalization">Name on the case <span class="opt">(optional)</span></label>
-        <input type="text" id="personalization" maxlength="20" placeholder="Max 20 characters">
+        <label class="top">Main case color</label>
+        <div class="pills" role="radiogroup" aria-label="Main color" id="colorPills">
+          <label><input type="radio" name="main_color" value="Black" required><span class="pill"><span class="dot" style="background:#1a1a1a"></span>Black</span></label>
+          <label><input type="radio" name="main_color" value="White"><span class="pill"><span class="dot" style="background:#fff"></span>White</span></label>
+          <label><input type="radio" name="main_color" value="Red"><span class="pill"><span class="dot" style="background:#e03131"></span>Red</span></label>
+          <label><input type="radio" name="main_color" value="Orange"><span class="pill"><span class="dot" style="background:#ff8c1a"></span>Orange</span></label>
+          <label><input type="radio" name="main_color" value="Yellow"><span class="pill"><span class="dot" style="background:#ffd43b"></span>Yellow</span></label>
+          <label><input type="radio" name="main_color" value="Green"><span class="pill"><span class="dot" style="background:#40c057"></span>Green</span></label>
+          <label><input type="radio" name="main_color" value="Blue"><span class="pill"><span class="dot" style="background:#339af0"></span>Blue</span></label>
+          <label><input type="radio" name="main_color" value="Purple"><span class="pill"><span class="dot" style="background:#845ef7"></span>Purple</span></label>
+          <label><input type="radio" name="main_color" value="Pink"><span class="pill"><span class="dot" style="background:#f783ac"></span>Pink</span></label>
+          <label><input type="radio" name="main_color" value="Gray"><span class="pill"><span class="dot" style="background:#868e96"></span>Gray</span></label>
+          <label><input type="radio" name="main_color" value="Brown"><span class="pill"><span class="dot" style="background:#8d6e4f"></span>Brown</span></label>
+          <label><input type="radio" name="main_color" value="Glow in the dark"><span class="pill">🌟 Glow</span></label>
+          <label><input type="radio" name="main_color" value="Metallic"><span class="pill">✨ Metallic</span></label>
+          <label><input type="radio" name="main_color" value="Silk"><span class="pill">🪩 Silk</span></label>
+          <label><input type="radio" name="main_color" value="Marble"><span class="pill">🌀 Marble</span></label>
+          <label><input type="radio" name="main_color" value="Galaxy sparkle"><span class="pill">🌌 Galaxy sparkle</span></label>
+          <label><input type="radio" name="main_color" value="Rainbow"><span class="pill">🌈 Rainbow</span></label>
+          <label><input type="radio" name="main_color" value="Custom"><span class="pill">🎨 Custom…</span></label>
+        </div>
+        <p class="hint">Want a color you don't see? Pick Custom and describe it in Special requests.</p>
       </div>
-      <div class="field">
-        <label class="top" for="needed_by">Needed by <span class="opt">(optional)</span></label>
-        <input type="date" id="needed_by">
+      <div class="two-col">
+        <div class="field">
+          <label class="top" for="lid_color">Lid color <span class="opt">(optional — blank = same as case)</span></label>
+          <input type="text" id="lid_color" maxlength="60" placeholder="e.g. burnt orange">
+        </div>
+        <div class="field">
+          <label class="top" for="accent_color">Text/logo color <span class="opt">(optional)</span></label>
+          <input type="text" id="accent_color" maxlength="60" placeholder="e.g. white">
+        </div>
       </div>
     </div>
 
-    <div class="field">
-      <label class="top" for="notes">Anything else? <span class="opt">(specs, ideas, links)</span></label>
-      <textarea id="notes" maxlength="1000" placeholder="Tell us anything that helps us print it right"></textarea>
+    <div class="section">
+      <h2><span class="num">5</span>Lid design</h2>
+      <div class="pills" role="radiogroup" aria-label="Design">
+        <label><input type="radio" name="design" value="Solid (plain)" checked><span class="pill">Solid</span></label>
+        <label><input type="radio" name="design" value="NeeDoh logo"><span class="pill">NeeDoh logo ✨</span></label>
+        <label><input type="radio" name="design" value="Name"><span class="pill">Name</span></label>
+        <label><input type="radio" name="design" value="Initials"><span class="pill">Initials</span></label>
+        <label><input type="radio" name="design" value="Custom text"><span class="pill">Custom text</span></label>
+        <label><input type="radio" name="design" value="Custom design"><span class="pill">Custom design 🎨</span></label>
+        <label><input type="radio" name="design" value="No preference"><span class="pill">Surprise me 🤷</span></label>
+      </div>
+      <div id="persoBlock" class="hidden">
+        <div class="two-col" style="margin-top:14px">
+          <div class="field">
+            <label class="top" for="personalization">Text to print <span class="opt">(max 20 characters)</span></label>
+            <input type="text" id="personalization" maxlength="20" placeholder="EMMA'S NEEDOHS">
+          </div>
+          <div class="field">
+            <label class="top" for="font">Font style</label>
+            <select id="font">
+              <option>Fun</option>
+              <option>Bubble</option>
+              <option>Block</option>
+              <option>Script</option>
+              <option>Surprise me</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">6</span>How many &amp; how you'll get it</h2>
+      <div class="two-col">
+        <div class="field">
+          <label class="top" for="quantity">How many cases?</label>
+          <input type="number" id="quantity" min="1" max="20" value="1" required>
+        </div>
+        <div class="field">
+          <label class="top">Delivery</label>
+          <div class="pills" role="radiogroup" aria-label="Order type">
+            <label><input type="radio" name="order_type" value="Local pickup" checked><span class="pill">🏠 Pickup</span></label>
+            <label><input type="radio" name="order_type" value="Local delivery"><span class="pill">🚗 Local delivery</span></label>
+            <label><input type="radio" name="order_type" value="Ship to me"><span class="pill">📦 Ship</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field hidden" id="addressBlock">
+        <label class="top" for="ship_address">Delivery / shipping address</label>
+        <textarea id="ship_address" maxlength="300" placeholder="Name, street, city, state, ZIP"></textarea>
+      </div>
+      <div class="field">
+        <label class="top">How would you like to pay?</label>
+        <div class="pills" role="radiogroup" aria-label="Payment">
+          <label><input type="radio" name="payment_method" value="Venmo" required><span class="pill">Venmo</span></label>
+          <label><input type="radio" name="payment_method" value="Cash App"><span class="pill">Cash App</span></label>
+          <label><input type="radio" name="payment_method" value="PayPal"><span class="pill">PayPal</span></label>
+          <label><input type="radio" name="payment_method" value="Apple Pay"><span class="pill">Apple Pay</span></label>
+          <label><input type="radio" name="payment_method" value="Cash at pickup"><span class="pill">💵 Cash</span></label>
+        </div>
+        <p class="hint">We'll confirm your total and send a payment request before printing.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">7</span>Extras</h2>
+      <div class="field">
+        <label class="top" for="photo">Photo of your NeeDoh <span class="opt">(recommended — helps us nail the fit!)</span></label>
+        <input type="file" id="photo" accept="image/*">
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label class="top" for="needed_by">Need it by a date? <span class="opt">(optional)</span></label>
+          <input type="date" id="needed_by">
+        </div>
+      </div>
+      <div class="field">
+        <label class="top" for="notes">Special requests <span class="opt">(specific shades, gift, matching set…)</span></label>
+        <textarea id="notes" maxlength="1000" placeholder="Anything else you'd like us to know about your order?"></textarea>
+      </div>
     </div>
 
     <button class="submit" type="submit" id="submitBtn">Send my order 🚀</button>
@@ -253,7 +371,9 @@
   <div id="done">
     <div class="big">🎉</div>
     <h2>Order received!</h2>
-    <p>We'll reach out to confirm details and get printing.<br>Thanks for squeezing us in!</p>
+    <div class="ordnum" id="ordNum">NEE-0000</div>
+    <div class="summary" id="ordSummary"></div>
+    <p class="note">We'll contact you to confirm details and your total, then get printing!</p>
     <button type="button" onclick="resetForm()">Order another one</button>
   </div>
 
@@ -269,26 +389,92 @@ const doneBox = document.getElementById("done");
 const errBox = document.getElementById("errBox");
 const submitBtn = document.getElementById("submitBtn");
 
+const val = id => document.getElementById(id).value.trim();
+const radio = name => form.querySelector(`input[name=${name}]:checked`)?.value ?? null;
+
+// Personalization block appears for text-y designs
+const persoDesigns = ["Name", "Initials", "Custom text", "Custom design"];
+form.querySelectorAll("input[name=design]").forEach(r =>
+  r.addEventListener("change", () => {
+    document.getElementById("persoBlock").classList.toggle("hidden", !persoDesigns.includes(radio("design")));
+  }));
+
+// Address appears for delivery/shipping
+form.querySelectorAll("input[name=order_type]").forEach(r =>
+  r.addEventListener("change", () => {
+    const needsAddr = radio("order_type") !== "Local pickup";
+    document.getElementById("addressBlock").classList.toggle("hidden", !needsAddr);
+    document.getElementById("ship_address").required = needsAddr;
+  }));
+
+async function uploadPhoto(file) {
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+  const name = `order-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/needoh-photos/${name}`, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": file.type || "image/jpeg"
+    },
+    body: file
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return `${SUPABASE_URL}/storage/v1/object/public/needoh-photos/${name}`;
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   errBox.style.display = "none";
+
+  const types = [...form.querySelectorAll("input[name=needoh_type]:checked")].map(c => c.value);
+  if (!types.length) {
+    errBox.textContent = "Please pick at least one NeeDoh type (section 3)!";
+    errBox.style.display = "block";
+    document.querySelector(".pills.multi").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
   submitBtn.disabled = true;
   submitBtn.textContent = "Sending…";
 
-  const payload = {
-    customer_name: document.getElementById("customer_name").value.trim(),
-    contact: document.getElementById("contact").value.trim(),
-    case_style: form.querySelector("input[name=case_style]:checked").value,
-    needoh_type: document.getElementById("needoh_type").value,
-    quantity: parseInt(document.getElementById("quantity").value, 10) || 1,
-    colors: document.getElementById("colors").value.trim() || null,
-    with_logo: form.querySelector("input[name=with_logo]:checked").value === "yes",
-    personalization: document.getElementById("personalization").value.trim() || null,
-    needed_by: document.getElementById("needed_by").value || null,
-    notes: document.getElementById("notes").value.trim() || null
-  };
-
   try {
+    let photo_url = null;
+    const photoFile = document.getElementById("photo").files[0];
+    if (photoFile) {
+      if (photoFile.size > 8 * 1024 * 1024) throw new Error("photo too large");
+      submitBtn.textContent = "Uploading photo…";
+      photo_url = await uploadPhoto(photoFile);
+      submitBtn.textContent = "Sending…";
+    }
+
+    const order_code = "NEE-" + Math.random().toString(36).slice(2, 6).toUpperCase();
+    const payload = {
+      order_code,
+      customer_name: val("customer_name"),
+      contact: val("contact"),
+      preferred_contact: radio("preferred_contact"),
+      social_handle: val("social_handle") || null,
+      case_style: radio("case_style"),
+      needoh_types: types.join(", "),
+      needoh_type: types[0],
+      quantity: parseInt(val("quantity"), 10) || 1,
+      main_color: radio("main_color"),
+      lid_color: val("lid_color") || null,
+      accent_color: val("accent_color") || null,
+      colors: [radio("main_color"), val("lid_color") && `lid: ${val("lid_color")}`, val("accent_color") && `text: ${val("accent_color")}`].filter(Boolean).join(", "),
+      design: radio("design"),
+      with_logo: radio("design") === "NeeDoh logo",
+      personalization: persoDesigns.includes(radio("design")) ? (val("personalization") || null) : null,
+      font: persoDesigns.includes(radio("design")) ? document.getElementById("font").value : null,
+      order_type: radio("order_type"),
+      ship_address: radio("order_type") === "Local pickup" ? null : (val("ship_address") || null),
+      payment_method: radio("payment_method"),
+      photo_url,
+      needed_by: document.getElementById("needed_by").value || null,
+      notes: val("notes") || null
+    };
+
     const res = await fetch(`${SUPABASE_URL}/rest/v1/needoh_orders`, {
       method: "POST",
       headers: {
@@ -300,11 +486,25 @@ form.addEventListener("submit", async (e) => {
       body: JSON.stringify(payload)
     });
     if (!res.ok) throw new Error(await res.text());
+
+    document.getElementById("ordNum").textContent = "Order #" + order_code;
+    document.getElementById("ordSummary").innerHTML = [
+      `<b>${payload.quantity} × ${payload.case_style}</b>`,
+      `For: ${payload.needoh_types}`,
+      `Color: ${payload.colors}`,
+      `Design: ${payload.design}${payload.personalization ? ` — "${payload.personalization}" (${payload.font})` : ""}`,
+      `${payload.order_type} · pay by ${payload.payment_method}`,
+      payload.needed_by ? `Needed by ${payload.needed_by}` : ""
+    ].filter(Boolean).join("<br>");
+
     form.style.display = "none";
     doneBox.style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
   } catch (err) {
     console.error(err);
+    errBox.textContent = String(err).includes("too large")
+      ? "That photo is over 8MB — try a smaller one!"
+      : "Hmm, that didn't go through. Please try again in a sec!";
     errBox.style.display = "block";
   } finally {
     submitBtn.disabled = false;
@@ -314,6 +514,8 @@ form.addEventListener("submit", async (e) => {
 
 function resetForm() {
   form.reset();
+  document.getElementById("persoBlock").classList.add("hidden");
+  document.getElementById("addressBlock").classList.add("hidden");
   form.style.display = "block";
   doneBox.style.display = "none";
 }

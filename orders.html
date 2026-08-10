@@ -138,16 +138,19 @@ async function loadOrders() {
   list.innerHTML = orders.map(o => `
     <div class="card ${o.status === "done" ? "done" : ""}">
       <div class="head">
-        <span class="who">${esc(o.customer_name)} <span class="tag ${o.status}">${o.status}</span></span>
+        <span class="who">${esc(o.customer_name)}${o.order_code ? ` <small style="opacity:.5;font-size:13px">${esc(o.order_code)}</small>` : ""} <span class="tag ${o.status}">${o.status}</span></span>
         <span class="when">${new Date(o.created_at).toLocaleString()}</span>
       </div>
       <div class="spec">
-        <b>${esc(o.case_style)}</b> × ${o.quantity} · for ${esc(o.needoh_type || "?")}<br>
+        <b>${esc(o.case_style)}</b> × ${o.quantity} · for ${esc(o.needoh_types || o.needoh_type || "?")}<br>
         ${o.colors ? `🎨 ${esc(o.colors)}<br>` : ""}
-        ${o.with_logo ? "✨ With logo" : "No logo"}${o.personalization ? ` · name: "${esc(o.personalization)}"` : ""}<br>
+        ${o.design ? `🖌️ ${esc(o.design)}` : (o.with_logo ? "✨ With logo" : "No logo")}${o.personalization ? ` — "${esc(o.personalization)}"${o.font ? ` (${esc(o.font)})` : ""}` : ""}<br>
+        ${o.order_type ? `🚚 ${esc(o.order_type)}${o.ship_address ? ` — ${esc(o.ship_address)}` : ""}<br>` : ""}
+        ${o.payment_method ? `💳 ${esc(o.payment_method)}<br>` : ""}
         ${o.needed_by ? `📅 Needed by ${esc(o.needed_by)}<br>` : ""}
         ${o.notes ? `📝 ${esc(o.notes)}<br>` : ""}
-        📬 ${esc(o.contact)}
+        ${o.photo_url ? `📷 <a href="${esc(o.photo_url)}" target="_blank" rel="noopener">their NeeDoh photo</a><br>` : ""}
+        📬 ${esc(o.contact)}${o.preferred_contact ? ` (prefers ${esc(o.preferred_contact).toLowerCase()})` : ""}${o.social_handle ? ` · ${esc(o.social_handle)}` : ""}
       </div>
       <div class="statusBtns">
         <button onclick="setStatus('${o.id}','new')">New</button>

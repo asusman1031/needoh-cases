@@ -5,15 +5,21 @@ Form, but ours" for gathering orders and print specs from friends and family.
 
 ## Live site
 
-- **Order form** (share this): https://zwiqmrlquldhjjwbeakj.supabase.co/functions/v1/needoh
-- **Order queue** (private, passcode-gated): https://zwiqmrlquldhjjwbeakj.supabase.co/functions/v1/needoh/orders
+- **Order form** (share this): https://needoh-cases.vercel.app/
+- **Order queue** (private, passcode-gated): https://needoh-cases.vercel.app/orders.html
+
+Vercel auto-deploys every push to this repo's default branch. The old
+`…supabase.co/functions/v1/needoh` links redirect here.
 
 ## Pages
 
-- **`index.html`** — the public order form. Collects name, contact, case style
-  (Pizza Slice / Chill Case cube / Keychain Mini / Custom), which NeeDoh it's
-  for, quantity, colors, logo yes/no, optional personalization text, needed-by
-  date, and free-form notes.
+- **`index.html`** — the public order form, following the "must-haves" spec:
+  contact info + preferred contact method, case size (single through
+  large/custom), multi-select NeeDoh types, main/lid/accent colors including
+  specialty finishes, lid design + personalization text with font choice,
+  quantity, pickup/delivery/shipping with conditional address, payment
+  preference, optional NeeDoh photo upload, need-by date, special requests,
+  and a confirmation screen with an order number.
 - **`orders.html`** — the private order queue. Passcode-gated; shows every
   order newest-first and lets you flip status between New → Printing → Done.
 
@@ -33,11 +39,14 @@ what they're for; the security lives in the database policies.
 
 ## Hosting
 
-The live site is served by a Supabase Edge Function (`supabase/functions/
-needoh/index.ts`) that embeds both pages — regenerate it from the HTML files
-and redeploy if you change them. There's also a GitHub Pages workflow
-(`.github/workflows/pages.yml`) as an alternative host: enable Pages in the
-repo settings (source: GitHub Actions) and trigger the workflow manually.
+Vercel hosts the site and auto-deploys every push. The Supabase Edge Function
+(`supabase/functions/needoh/index.ts`) now just redirects old links to Vercel.
+There's also a GitHub Pages workflow (`.github/workflows/pages.yml`) as a
+backup host: enable Pages in the repo settings (source: GitHub Actions) and
+trigger the workflow manually.
+
+Customer photo uploads go to the public `needoh-photos` storage bucket
+(upload-only for the public key; links are visible in the order queue).
 
 ## Running locally
 
