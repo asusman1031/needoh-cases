@@ -81,17 +81,13 @@ async function upload(input, n) {
   status.textContent = "Uploading…";
   status.className = "status";
   try {
-    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/needoh-photos/gallery-${n}.jpg`, {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/needoh/upload?slot=${n}`, {
       method: "POST",
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": file.type || "image/jpeg",
-        "x-upsert": "true"
-      },
+      headers: { "Content-Type": file.type || "image/jpeg" },
       body: file
     });
-    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json().catch(() => null);
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${(data && data.error) || "unknown"}`);
     status.textContent = "Uploaded! It's live on the homepage.";
     status.className = "status ok";
     const img = document.getElementById("img" + n);
@@ -99,7 +95,7 @@ async function upload(input, n) {
     img.src = publicUrl(n) + "?t=" + Date.now();
   } catch (e) {
     console.error(e);
-    status.textContent = "Upload failed — try again.";
+    status.textContent = "Upload failed — " + String(e.message || e).slice(0, 160);
     status.className = "status err";
   }
 }
